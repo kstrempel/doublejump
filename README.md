@@ -1,4 +1,12 @@
-# doublejump
+# Doublejump
+
+This project was just a small test about how to use phaser.io with clojurescript and chestnut live programming.
+
+![Screenshort phaser.io with clojurescript](https://raw.githubusercontent.com/kstrempel/doublejump/master/resources/ScreenShot.png)
+
+For the test I implemented the extremly nice double jump example from the [Game Mechanic Explorer](http://gamemechanicexplorer.com/#platformer-5).
+
+Special thanks goes to [John Watson](https://twitter.com/yafd)
 
 
 ## Development
@@ -26,63 +34,8 @@ When you see the line `Successfully compiled "resources/public/app.js"
 in 21.36 seconds.`, you're ready to go. Browse to
 `http://localhost:10555` and enjoy.
 
-**Attention: It is not longer needed to run `lein fighwheel`
-  separately. This is now taken care of behind the scenes**
-
-## Trying it out
-
-If all is well you now have a browser window saying 'Hello Chestnut',
-and a REPL prompt that looks like `cljs.user=>`.
-
-Open `resources/public/css/style.css` and change some styling of the
-H1 element. Notice how it's updated instantly in the browser.
-
-Open `src/cljs/chestnut/core.cljs`, and change `dom/h1` to
-`dom/h2`. As soon as you save the file, your browser is updated.
-
-In the REPL, type
-
-```
-(ns chestnut.core)
-(swap! app-state assoc :text "Interactivity FTW")
-```
-
-Notice again how the browser updates.
-
-## Deploying to Heroku
-
-This assumes you have a
-[Heroku account](https://signup.heroku.com/dc), have installed the
-[Heroku toolbelt](https://toolbelt.heroku.com/), and have done a
-`heroku login` before.
-
-``` sh
-git init
-git add -A
-git commit
-heroku create
-git push heroku master:master
-heroku open
-```
-
-## Running with Foreman
-
-Heroku uses [Foreman](http://ddollar.github.io/foreman/) to run your
-app, which uses the `Procfile` in your repository to figure out which
-server command to run. Heroku also compiles and runs your code with a
-Leiningen "production" profile, instead of "dev". To locally simulate
-what Heroku does you can do:
-
-``` sh
-lein with-profile -dev,+production uberjar && foreman start
-```
-
-Now your app is running at
-[http://localhost:5000](http://localhost:5000) in production mode.
-
 ## License
 
-Copyright © 2014 FIXME
+Copyright © 2014 Kai Strempel
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Eclipse Public License either version 1.0 any later version.
