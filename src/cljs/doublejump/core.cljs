@@ -1,20 +1,17 @@
-(ns doublejump.core
-  (:require [om.core :as om :include-macros true]
-            [om.dom :as dom :include-macros true]))
-
+(ns doublejump.core)
 
 (defn GameState [game]
   (let [max_speed 500
         acceleration 1500
         drag 600
-        gravity 2600
+        gravity 3600
         jump_speed -1000]
     (reify
       Object
       (create [this]
         (set! (.. game -stage -backgroundColor) 0x4488cc)
 
-        (set! (.-player this) (.sprite (.. this -game -add) 
+        (set! (.-player this) (.sprite (.. game -add) 
                                        (/ (.-width game) 2) 
                                        (/ (.-height game) 2) 
                                        "player"))
@@ -43,6 +40,20 @@
             (.add (.-ground this) groundBlock))
           (if (< x (.-width game))
             (recur (+ x 32))))
+
+        (loop [i 0]
+          (let [groundBlock (.sprite (.-add game) 
+                                     (* (Math/random) (.-width game))
+                                     (* (Math/random) (.-height game))
+                                     "ground")]
+            (.enable (.-physics game) groundBlock js/Phaser.Physics.ARCADE)
+            (set! (.. groundBlock -body -immovable) true)
+            (set! (.. groundBlock -body -allowGravity) false)
+            (.add (.-ground this) groundBlock))
+          (if (< i 20)
+            (recur (inc i))))
+
+        
 
         (.addKeyCapture (.. game -input -keyboard) 
                         (clj->js 
@@ -80,12 +91,12 @@
           (.setText (.-fpsText this) (str (.. game -time -fps) "FPS")))
         (.collide (.. game -physics -arcade) (.-player this) (.-ground this))
 
-        (if (.leftInputIsActive this)
-          (set! (.. this -player -body -acceleration -x) (- acceleration))
-          (if (.rightInputIsActive this)
-            (set! (.. this -player -body -acceleration -x) acceleration)
-            (set! (.. this -player -body -acceleration -x) 0)))
-
+        (set! (.. this -player -body -acceleration -x) 
+              (cond
+               (.leftInputIsActive this) (- acceleration)
+               (.rightInputIsActive this) acceleration
+               :else 0))
+        
         (let [onTheGround (.. this -player -body -touching -down)]
           (if (.upInputIsActive this 5)
             (set! (.. this -player -body -velocity -y) jump_speed)))) 
@@ -99,22 +110,25 @@
           (= isActive inPlace)))
 
       (rightInputIsActive [this]
-        (let [isActive (.isDown (.. this -input -keyboard) js/Phaser.Keyboard.RIGHT)
+        (let [width (.-width game)
+              isActive (.isDown (.. this -input -keyboard) js/Phaser.Keyboard.RIGHT)
               inPlace (not (and (.. game -input -activePointer -isDown)
                                 (< (.. game -input -activePointer -x)
-                                   (+ (/ (.-width game) 2)
-                                      (/ (.-width game) 4)))))]
+                                   (+ (/ width 2)
+                                      (/ width 4)))))]
           
           (= isActive inPlace)))
       
       (upInputIsActive [this duration]
-        (let [isActive (.justPressed (.. this -input -keyboard) js/Phaser.Keyboard.UP duration)
+        (let [x (.. game -input -activePointer -x)
+              width (.-width game)
+              isActive (.justPressed (.. this -input -keyboard) js/Phaser.Keyboard.UP duration)
               inPlace (not (and 
-                            (.justPressed (.. this -input -activePointer) (+ duration (/ 1000 60)))
-                            (> (.. game -input -activePointer -x) (/ (.-width game) 4))
-                            (< (.. game -input -activePointer -x)
-                               (+ (/ (.-width game) 2)
-                                  (/ (.-width game) 4)))))]
+                            (.justPressed (.. game -input -activePointer) (+ duration (/ 1000 60)))
+                            (> x (/ width 4))
+                            (< x
+                               (+ (/ width 2)
+                                  (/ width 4)))))]
           (= isActive inPlace))))))
 
 (defonce game (js/Phaser.Game. 848 450 js/Phaser.AUTO "app"))
