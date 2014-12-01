@@ -1,5 +1,6 @@
 (ns doublejump.core)
 
+
 (defn GameState [game]
   (let [max_speed 500
         acceleration 1500

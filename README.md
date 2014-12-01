@@ -1,6 +1,6 @@
 # Doublejump
 
-This project was just a small test about how to use phaser.io with clojurescript and chestnut live programming.
+This project was just a small test how to use phaser.IO with clojurescript and chestnut live programming.
 
 ![Screenshort phaser.io with clojurescript](https://raw.githubusercontent.com/kstrempel/doublejump/master/resources/ScreenShot.png)
 

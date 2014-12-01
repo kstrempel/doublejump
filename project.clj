@@ -1,13 +1,13 @@
-(defproject doublejump "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+(defproject doublejump "0.8.0"
+  :description "Phaser.IO Clojurescript example"
+  :url "https://github.com/kstrempel/doublejump"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :source-paths ["src/clj" "src/cljs"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2371" :scope "provided"]
+                 [org.clojure/clojurescript "0.0-2371"]
                  [ring "1.3.1"]
                  [compojure "1.2.0"]
                  [enlive "1.1.5"]
@@ -29,10 +29,6 @@
                              :compiler {:output-to     "resources/public/js/app.js"
                                         :output-dir    "resources/public/js/out"
                                         :source-map    "resources/public/js/out.js.map"
-                                        :preamble      ["react/react.min.js"
-                                                        "resources/public/js/phaser.min.js"]
-                                        :externs       ["react/externs/react.js"
-                                                        "resources/public/phaser.js" ]
                                         :optimizations :none
                                         :pretty-print  true}}}}
 
